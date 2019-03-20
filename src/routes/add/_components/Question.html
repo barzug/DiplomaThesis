@@ -1,0 +1,39 @@
+<div class="test-answer">
+	Вопрос <textarea bind:value=text on:input="fire('changeText', { value: event.target.value })" />
+
+	<label>
+		Тип вопроса
+		<select bind:value=type on:change="fire('changeType', { value: event.target.value })">
+			{#each testTypes as t}
+				<option value="{ t.id }">{ t.title }</option>
+			{/each}
+		</select>
+	</label>
+
+	<div>
+		{#if type === types.SINGLE || type === types.SEVERAL}
+			{#each answers as answer, index}
+				<label>
+					Вариант {index+1}: <input bind:value=answer on:input='fire("changeAnswers", { value: event.target.value, index })' type="text" />
+				</label>
+			{/each}
+		{/if}
+	</div>
+	<button on:click="fire('remove')">x</button>
+</div>
+
+<style>
+</style>
+
+<script>
+	import testTypes, * as types from "../_constants/testTypes.js";
+
+	export default {
+	  data() {
+	    return {
+	      types,
+	      testTypes
+	    };
+	  }
+	};
+</script>

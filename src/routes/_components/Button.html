@@ -1,0 +1,23 @@
+<button on:click="fire('click')">
+	<slot />
+</button>
+
+<style>
+  button {
+    margin: 0;
+    padding: 12px 12px;
+    color: #fff;
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: inline-block;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    background-color: var(--accent);
+  }
+</style>

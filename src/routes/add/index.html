@@ -1,0 +1,96 @@
+<svelte:head>
+	<title>Создание теста</title>
+</svelte:head>
+
+<div class="test-settings">
+	<label>
+		Название <input type="text" name="name">
+	</label>
+	<label>
+		Описание <input type="text" name="description">
+	</label>
+	<label>
+		Время на тест <input type="text" name="time">
+	</label>
+	<label>
+		Время окончания тестирования <input type="text" name="expiration_date">
+	</label>
+</div>
+
+
+{#each questions as question, index (question.id)}
+	<Question
+		type={question.type}
+		text={question.text}
+		answers={question.answers}
+		on:remove="removeQuestion(index)"
+    on:changeType="changeQuestionType(event, index)"
+    on:changeText="changeQuestionText(event, index)"
+    on:changeAnswers="changeQuestionAnswers(event, index)"
+	/>
+{/each}
+<Button on:click="addQuestion()">Добавить вопрос</Button>
+<Button on:click="createTest()">Готово</Button>
+
+<style>
+	.test-settings label {
+	  display: block;
+	}
+</style>
+
+<script>
+  import { setDeep } from "svelte-extras";
+  import testTypes from "./_constants/testTypes.js";
+
+  let questions = [];
+
+  export default {
+    components: {
+      Question: "./_components/Question.html",
+      Button: "../_components/Button.html"
+    },
+    data() {
+      return {
+        questions: []
+      };
+    },
+    methods: {
+      setDeep,
+      addQuestion() {
+        const { questions } = this.get();
+
+        questions.push({
+          type: testTypes[0].id,
+          text: "",
+          answers: Array.from({ length: 8 }, () => "")
+        });
+
+        this.set({ questions });
+      },
+      removeQuestion(index) {
+        const { questions } = this.get();
+
+        questions.splice(index, 1);
+
+        this.set({ questions });
+      },
+      changeQuestionType(event, index) {
+        const { value } = event;
+
+        this.setDeep(`questions[${index}].type`, value);
+      },
+      changeQuestionText(event, index) {
+        const { value } = event;
+
+        console.log("value", value);
+
+        this.setDeep(`questions[${index}].text`, value);
+      },
+      changeQuestionAnswers(event, index) {
+        const { value, index: answerIndex } = event;
+
+        this.setDeep(`questions[${index}].answers[${answerIndex}]`, value);
+      }
+    }
+  };
+</script>

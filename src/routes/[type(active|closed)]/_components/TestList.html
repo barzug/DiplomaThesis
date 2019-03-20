@@ -1,0 +1,32 @@
+<nav>
+	<ul>
+		<li class="type-select-element">
+			<a class='{type === "active" ? "selected" : ""}' href='/active/1'>Доступные</a>
+		</li>
+		<li class="type-select-element">
+			<a class='{type === "closed" ? "selected" : ""}' href='/closed/1'>Завершенные</a>
+		</li>
+	</ul>
+</nav>
+<ul>
+	{#each tests as test, i}
+		<li index='{start + i}'>
+			<TestRow test='{test}' index='{start + i}' />
+		</li>
+	{/each}
+</ul>
+
+<style>
+	.type-select-element {
+	  display: inline-block;
+	}
+</style>
+
+
+<script>
+		export default {
+		  components: {
+		    TestRow: "./TestRow.html"
+		  }
+		};
+</script>

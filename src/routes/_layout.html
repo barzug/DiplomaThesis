@@ -1,0 +1,32 @@
+<Header user={user} />
+
+<main>
+	<svelte:component this={child.component} {...child.props} />
+</main>
+
+<Footer />
+
+<style>
+	main {
+	  position: relative;
+	  max-width: 56em;
+	  background-color: white;
+	  padding: 2em;
+	  margin: 0 auto;
+	  box-sizing: border-box;
+	}
+</style>
+
+<script>
+		export default {
+		  components: {
+		    Header: "./_components/Header.html",
+		    Footer: "./_components/Footer.html"
+		  },
+		  data() {
+		    return {
+		      user: { name: "Sergey Barsukov" }
+		    };
+		  }
+		};
+</script>

@@ -1,0 +1,26 @@
+<svelte:head>
+	<title>{type==="active" ? "Доступные тесты" : "Завершенные тесты"} </title>
+</svelte:head>
+
+<TestList tests={tests} />
+
+<style>
+</style>
+
+<script>
+		export default {
+		  components: {
+		    TestList: "./_components/TestList.html"
+		  },
+		  async preload({ params, query }) {
+		    const res = await this.fetch(`${params.type}/${params.page}.json`);
+		    const data = await res.json();
+
+		    if (res.status === 200) {
+		      return { tests: data, type: params.type };
+		    } else {
+		      this.error(res.status, data.message);
+		    }
+		  }
+		};
+</script>
