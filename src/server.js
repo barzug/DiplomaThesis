@@ -3,6 +3,8 @@ import polka from 'polka';
 import compression from 'compression';
 import * as sapper from '../__sapper__/server.js';
 
+const bodyParser = require('body-parser')
+
 const { PORT, NODE_ENV } = process.env;
 
 console.log('process.env;', PORT)
@@ -10,6 +12,7 @@ console.log('process.env;', PORT)
 const dev = NODE_ENV === 'development';
 
 polka() // You can also use Express
+	.use(bodyParser.json())
 	.use(
 		compression({ threshold: 0 }),
 		sirv('static', { dev }),

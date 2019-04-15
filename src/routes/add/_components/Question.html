@@ -17,6 +17,10 @@
 					Вариант {index+1}: <input bind:value=answer on:input='fire("changeAnswers", { value: event.target.value, index })' type="text" />
 				</label>
 			{/each}
+		{:elseif type === types.SHORT}
+			<label>
+				Правильный ответ: <input bind:value=answers[0] on:input='fire("changeAnswers", { value: event.target.value, index: 0 })' type="text" />
+			</label>
 		{/if}
 	</div>
 	<button on:click="fire('remove')">x</button>

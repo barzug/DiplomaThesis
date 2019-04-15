@@ -4,21 +4,25 @@
 
 <div class="test-settings">
 	<label>
-		Название <input type="text" name="name">
+		Название 
+    <input bind:value=title on:input="changeTitle({ value: event.target.value })" type="text" name="name">
 	</label>
 	<label>
-		Описание <input type="text" name="description">
+		Описание 
+    <input bind:value=description on:input="changeDescription({ value: event.target.value })" type="text" name="description">
 	</label>
 	<label>
-		Время на тест <input type="text" name="time">
+		Время на тест 
+    <input bind:value=time on:input="changeTime({ value: event.target.value })" type="text" name="time">
 	</label>
 	<label>
-		Время окончания тестирования <input type="text" name="expiration_date">
+		Время окончания тестирования 
+    <input bind:value=expirationDate on:input="changeExpirationDate({ value: event.target.value })" type="text" name="expiration_date">
 	</label>
 </div>
 
 
-{#each questions as question, index (question.id)}
+{#each questions as question, index}
 	<Question
 		type={question.type}
 		text={question.text}
@@ -40,9 +44,10 @@
 
 <script>
   import { setDeep } from "svelte-extras";
+  import http from "../../_modules/http";
   import testTypes from "./_constants/testTypes.js";
 
-  let questions = [];
+  // let questions = [];
 
   export default {
     components: {
@@ -51,6 +56,10 @@
     },
     data() {
       return {
+        title: "",
+        description: "",
+        time: "",
+        expirationDate: "",
         questions: []
       };
     },
@@ -59,6 +68,8 @@
       addQuestion() {
         const { questions } = this.get();
 
+        console.log("questions", questions);
+
         questions.push({
           type: testTypes[0].id,
           text: "",
@@ -66,6 +77,26 @@
         });
 
         this.set({ questions });
+      },
+      changeTitle(event) {
+        const { value } = event;
+
+        this.set({ title: value });
+      },
+      changeDescription(event) {
+        const { value } = event;
+
+        this.set({ description: value });
+      },
+      changeTime(event) {
+        const { value } = event;
+
+        this.set({ time: value });
+      },
+      changeExpirationDate(event) {
+        const { value } = event;
+
+        this.set({ expirationDate: value });
       },
       removeQuestion(index) {
         const { questions } = this.get();
@@ -90,6 +121,25 @@
         const { value, index: answerIndex } = event;
 
         this.setDeep(`questions[${index}].answers[${answerIndex}]`, value);
+      },
+      createTest() {
+        const {
+          questions,
+          title,
+          description,
+          time,
+          expirationDate
+        } = this.get();
+
+        http("add.json", "POST", {
+          questions,
+          title,
+          description,
+          time,
+          expirationDate
+        }).then(() => {
+          location.href = "/";
+        });
       }
     }
   };

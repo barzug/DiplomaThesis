@@ -1,5 +1,3 @@
-import tests from './_tests.js';
-
 export function get(req, res, next) {
 	// the `slug` parameter is available because
 	// this file is called [slug].json.js
@@ -9,5 +7,7 @@ export function get(req, res, next) {
 		'Content-Type': 'application/json'
 	});
 
-	res.end(JSON.stringify(tests));
+	const displayedTests = global.tests ? global.tests.map((test) => ({title: test.title, id: test.id})) : ''
+
+	res.end(JSON.stringify(displayedTests));
 }

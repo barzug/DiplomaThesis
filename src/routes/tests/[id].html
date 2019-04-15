@@ -1,0 +1,24 @@
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
+
+<style>
+</style>
+
+<script>
+		export default {
+		  components: {},
+		  async preload({ params, query }) {
+		    const res = await this.fetch(`tests/${params.id}.json`);
+		    const data = await res.json();
+
+		    console.log("testsById: ", data);
+
+		    if (res.status === 200) {
+		      return { ...data };
+		    } else {
+		      this.error(res.status, data.message);
+		    }
+		  }
+		};
+</script>
